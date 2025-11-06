@@ -28,11 +28,7 @@ const Home = () => {
           className="w-[90%] md:w-[40%] lg:w-[35%] bg-[#FFF9F0] p-6 md:p-8 lg:p-12 rounded-lg shadow-lg 
                       mx-4 md:mr-8 lg:mr-12 md:ml-auto -mt-8 md:mt-0 relative"
         >
-          <div className="mb-3 md:mb-4">
-            <span className="text-sm uppercase tracking-wider text-[#8B0000]">
-              New Arrival
-            </span>
-          </div>
+         
 
           <h1 className="text-3xl md:text-4xl lg:text-4xl font-bold  mb-4 md:mb-6 text-[#8B0000]">
            Women Business
