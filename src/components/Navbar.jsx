@@ -59,26 +59,17 @@ const Navbar = () => {
     };
   }, []);
 
-  // Debug: Log authentication state
-  // useEffect(() => {
-  //   console.log("Auth State:", {
-  //     isAuthenticated: isAuthenticated(),
-  //     user,
-  //     isSeller: isSeller(),
-  //   });
-  // }, [isAuthenticated, user, isSeller]);
-
   return (
-    <nav className="bg-[#0B0B0D] py-2 fixed top-0 left-0 right-0 z-50 shadow-md">
+    <nav className="bg-[#6f2571] py-2 fixed top-0 left-0 right-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="shrink-0">
+            <Link to="/" className="shrink-0"> {/* Removed `no-underline` from here as it was inside a Link which wraps an image, it won't affect the image */}
               <img
                 src={logo}
                 alt="WBC Logo"
-                className="h-12 w-auto brightness-0 invert"
+                className="h-18 no-underline w-20 brightness-0 invert" // The `no-underline` on img itself has no effect.
               />
             </Link>
           </div>
@@ -89,7 +80,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center justify-center space-x-8">
               <Link
                 to="/"
-                className="text-white tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
+                className="text-white no-underline! transition-colors duration-300 hover:text-[#B24592] relative group"
               >
                 HOME
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
@@ -99,7 +90,7 @@ const Navbar = () => {
               {!isSeller() && !isSellerPage && (
                 <Link
                   to="/products"
-                  className="text-white tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
+                  className="text-white  tracking-wide transition-colors no-underline!  duration-300 hover:text-[#B24592] relative group"
                 >
                   PRODUCTS
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
@@ -108,7 +99,7 @@ const Navbar = () => {
 
               <Link
                 to="/about-us"
-                className="text-white tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
+                className="text-white  tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group no-underline! "
               >
                 ABOUT
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
@@ -116,7 +107,7 @@ const Navbar = () => {
 
               <Link
                 to="/contact-us"
-                className="text-white tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
+                className="text-white  tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group no-underline! "
               >
                 CONTACT
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
@@ -130,7 +121,7 @@ const Navbar = () => {
             {!isSeller() && !isSellerPage && (
               <Link
                 to="/cart"
-                className="relative flex items-center space-x-1 text-[#ffffff] hover:text-[#6A0DAD] transition-colors duration-300"
+                className="relative flex items-center space-x-1 text-[#ffffff] no-underline hover:text-[#6A0DAD] transition-colors duration-300"
               >
                 <FaShoppingCart className="text-xl" />
                 {cartCount > 0 && (
@@ -149,7 +140,7 @@ const Navbar = () => {
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
-                <button className="flex items-center space-x-2 text-white hover:bg-[#B24592] font-medium border border-transparent rounded-md px-4 py-2 transition-all duration-300 bg-[#6A0DAD] bg-opacity-80 hover:bg-opacity-100">
+                <button className="flex items-center space-x-2 text-white hover:bg-[#B24592] font-medium border border-transparent rounded-md px-4 py-2 transition-all duration-300 bg-[#6A0DAD] bg-opacity-80 hover:bg-opacity-100 no-underline"> {/* Added to button inside Link */}
                   <FaUser className="text-lg" />
                   <span className="max-w-32 truncate">
                     {user?.name || user?.businessName || "User"}
@@ -180,7 +171,7 @@ const Navbar = () => {
 
                   <Link
                     to="/seller-account"
-                    className="flex items-center px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
+                    className="flex items-center px-4 py-2 text-gray-700 no-underline hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
                     onClick={() => setIsDropdownOpen(false)}
                   >
                     <FaUser className="mr-3 text-gray-500" />
@@ -189,7 +180,7 @@ const Navbar = () => {
 
                   <Link
                     to="/my-profile"
-                    className="flex items-center px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
+                    className="flex items-center px-4 py-2 text-gray-700 no-underline hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
                     onClick={() => setIsDropdownOpen(false)}
                   >
                     <FaUser className="mr-3 text-gray-500" />
@@ -202,7 +193,7 @@ const Navbar = () => {
                         setIsDropdownOpen(false);
                         handleLogout();
                       }}
-                      className="flex items-center w-full px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 transition-all duration-300"
+                      className="flex items-center w-full px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 transition-all duration-300 no-underline"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -230,9 +221,9 @@ const Navbar = () => {
                   onMouseEnter={() => setIsDropdownOpen(true)}
                   onMouseLeave={() => setIsDropdownOpen(false)}
                 >
-                  <Link to="/login">
-                    <button className="text-white px-4 py-2 rounded-lg transition-all duration-300 font-semibold bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg">
-                      <div className="flex items-center space-x-2">
+                  <Link to="/login" className="no-underline!"> {/* Added to the Link wrapping the login button */}
+                    <button className="text-white px-4 py-2 rounded-lg transition-all duration-300 font-semibold bg-linear-to-r from-[#6A0DAD] to-[#9B59B6]  hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg">
+                      <div className="flex items-center  space-x-2">
                         <FaUser className="text-xl" />
                         <span>Login</span>
                       </div>
@@ -249,18 +240,18 @@ const Navbar = () => {
                   >
                     <Link
                       to="/signup"
-                      className="flex items-center px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
+                      className="flex items-center px-4 py-2 text-gray-300 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 no-underline!"
                       onClick={() => setIsDropdownOpen(false)}
                     >
-                      <FaUserPlus className="mr-3 text-gray-500" />
+                      <FaUserPlus className="mr-3" />
                       <span>Sign Up</span>
                     </Link>
                     <Link
                       to="/login"
-                      className="flex items-center px-4py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
+                      className="flex items-center px-4 py-2 text-gray-700 no-underline! hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 rounded-lg"
                       onClick={() => setIsDropdownOpen(false)}
                     >
-                      <FaUser className="mr-3 text-gray-500" />
+                      <FaUser className="mr-3" />
                       <span>Login</span>
                     </Link>
                   </div>
@@ -272,9 +263,9 @@ const Navbar = () => {
             {!isSellerPage && !isSeller() && (
               <Link
                 to="/become-seller"
-                className="text-white px-4 py-2 rounded-lg font-medium bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg transition-all duration-300"
+                className="text-white sm:px-2 px-4 py-2 rounded-lg font-medium bg-linear-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg transition-all no-underline! duration-300 md:h-11 items-center justify-center flex" 
               >
-                Become a Seller
+                Become a member
               </Link>
             )}
           </div>
@@ -336,7 +327,7 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/signup"
-                    className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                    className="flex items-center px-3 py-2 rounded-md text-white no-underline hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <FaUserPlus className="mr-3" />
@@ -344,7 +335,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/login"
-                    className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                    className="flex items-center px-3 py-2 rounded-md text-white no-underline hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <FaUser className="mr-3" />
@@ -359,7 +350,7 @@ const Navbar = () => {
                   {!isSeller() && !isSellerPage && (
                     <Link
                       to="/cart"
-                      className="relative flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                      className="relative flex items-center px-3 py-2 rounded-md text-white  hover:text-purple-300 border-width-1 border-transparent transition-all no-underline! duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <FaShoppingCart className="mr-3" />
@@ -374,7 +365,7 @@ const Navbar = () => {
 
                   <Link
                     to="/profile"
-                    className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                    className="flex items-center px-3 py-2 rounded-md text-white  hover:text-purple-300 border-width-1 border-transparent transition-all duration-300 no-underline!"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <FaUser className="mr-3" />
@@ -385,7 +376,7 @@ const Navbar = () => {
                   {isSeller() && (
                     <Link
                       to="/seller-account"
-                      className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                      className="flex items-center px-3 py-2 rounded-md text-white no-underline hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <FaClipboardList className="mr-3" />
@@ -399,7 +390,7 @@ const Navbar = () => {
               {!isSeller() && !isSellerPage && (
                 <Link
                   to="/products"
-                  className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                  className="flex items-center px-3 py-2 rounded-md text-white  hover:text-purple-300 border-width-1 border-transparent transition-all duration-300 no-underline!"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span>Products</span>
@@ -408,7 +399,7 @@ const Navbar = () => {
 
               <Link
                 to="/about-us"
-                className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                className="flex items-center px-3 py-2 rounded-md text-white  hover:text-purple-300 border-width-1 border-transparent transition-all duration-300 no-underline!"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <FaInfoCircle className="mr-3" />
@@ -416,7 +407,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/contact-us"
-                className="flex items-center px-3 py-2 rounded-md text-white hover:text-purple-300 border-width-1 border-transparent transition-all duration-300"
+                className="flex items-center px-3 py-2 rounded-md text-white  hover:text-purple-300 border-width-1 border-transparent transition-all duration-300 no-underline!"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <FaPhoneAlt className="mr-3" />
@@ -429,7 +420,7 @@ const Navbar = () => {
                     setIsMenuOpen(false);
                     handleLogout();
                   }}
-                  className="flex items-center w-full px-3 py-2 rounded-md text-red-400 hover:text-red-300 border-width-1 border-transparent transition-all duration-300"
+                  className="flex items-center w-full px-3 py-2 rounded-md text-red-400 no-underline hover:text-red-300 border-width-1 border-transparent transition-all duration-300"
                 >
                   <FaUser className="mr-3" />
                   <span>Logout</span>
@@ -440,7 +431,7 @@ const Navbar = () => {
               {!isSellerPage && !isSeller() && (
                 <Link
                   to="/become-seller"
-                  className="flex items-center px-3 py-2 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white rounded-md hover:from-[#B24592] hover:to-[#F15F79] transition-all duration-300"
+                  className="flex items-center px-3 py-2 bg-linear-to-r from-[#6A0DAD] to-[#9B59B6] text-white  rounded-md hover:from-[#B24592]  hover:to-[#F15F79] transition-all duration-300 no-underline!"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span>Become a Seller</span>
