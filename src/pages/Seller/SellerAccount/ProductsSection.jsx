@@ -29,7 +29,7 @@ const ProductsSection = () => {
 
         // ✅ **FIX 1:** Changed "/seller/products" to "/products"
         // The /api/seller part is already in axiosInstance.baseURL
-        const response = await axiosInstance.get("/products", {
+        const response = await axiosInstance.get("/products/seller", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -182,15 +182,15 @@ const ProductsSection = () => {
                       {product.stock > 0 ? "Active" : "Out of Stock"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap space-x-2">
+                  <td className="px-4 py-3 whitespace-nowrap space-x-5">
                     <button
-                      className="text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-blue-600 hover:text-blue-800 px-4 font-medium"
                       onClick={() => handleEditProduct(product._id)}
                     >
                       Edit
                     </button>
                     <button
-                      className="text-red-600 hover:text-red-800 font-medium"
+                      className="text-red-600 hover:text-red-800  font-medium"
                       onClick={() => handleDeleteProduct(product._id)}
                     >
                       Delete

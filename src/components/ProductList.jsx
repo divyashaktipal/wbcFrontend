@@ -60,7 +60,7 @@ const ProductList = () => {
     return <div className="text-center py-20">Loading products...</div>;
 
   return (
-    <div className="mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentProducts.map((product) => (
           <div
@@ -74,10 +74,14 @@ const ProductList = () => {
             />
             <div className="p-4">
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                {product.name}
+                 {product.name.length > 10
+                  ? `${product.name.slice(0, 10)}...`
+                  : product.name}
               </h3>
               <p className="text-gray-600 text-sm mb-2">
-                {product.description}
+               {product.description.length > 10
+                  ? `${product.description.slice(0, 10)}...`
+                  : product.description}
               </p>
               <div className="flex items-center gap-2 mb-3">
                 <p className="text-[#8B0000] font-semibold">
@@ -92,7 +96,7 @@ const ProductList = () => {
 
               {/* SIMPLIFIED: Always show 'Add to Cart' button */}
               <button
-                className="w-full flex items-center justify-center gap-2 bg-[#8B0000] text-white py-2 px-4 rounded-md hover:bg-[#660000] transition-colors duration-300"
+                className="w-full flex items-center justify-center gap-2 bg-[#6A0DAD] text-white py-2 px-4 rounded-md hover:bg-[#53094e] transition-colors duration-300"
                 onClick={() => handleAddToCart(product._id)}
               >
                 <FiShoppingCart /> Add to Cart

@@ -29,6 +29,7 @@ import OrderPage from "./pages/UserProfile/OrderPage";
 import MyProfilePage from "./pages/UserProfile/Profile";
 import CartProvider from "./contexts/CartContext";
 // import { useAuth } from '../contexts/useAuth'
+import MembersPage from "./pages/Home/MembersPage";
 
 
 
@@ -78,6 +79,7 @@ function App() {
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/orders" element={<OrderPage />} />
             <Route path="/my-profile" element={<MyProfilePage />} />
+            <Route path="/members" element={<MembersPage />} />
           </Routes>
           <Footer />
         </div>

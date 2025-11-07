@@ -22,11 +22,11 @@ export default function MyProfilePage() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        // console.log(response.data.buyerData.email);
+        console.log(response.data.buyerData.email);
 
         setUser(response.data.buyerData);
       } catch {
-        res.send("error");
+        // res.send("error");
         console.log("error");
       }
     };
