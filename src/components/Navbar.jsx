@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useRef, useEffect } from "react";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 import {
   FaShoppingCart,
   FaUser,
@@ -58,14 +58,14 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="py-2 fixed top-0 left-0 right-0 z-50 shadow-md    ">
+    <nav className="py-2 z-50 bg-gradient-to-r from-[#ffffff] to-[#d4dfed] shadow-md">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="shrink-0">
               <img
-                src={logo}
+                src="./wbc-logo.png"
                 alt="WBC Logo"
                 className="h-18 w-20 brightness-0 invert"
               />
@@ -78,35 +78,41 @@ const Navbar = () => {
               to="/"
               className=" tracking-wide font-semibold text-black  transition-colors duration-300 hover:text-[#B24592] relative group"
             >
-              HOME
+              Home
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
             </Link>
 
-            {!isSeller() && !isSellerPage && (
+            {/* {!isSeller() && !isSellerPage && (
               <Link
                 to="/products"
                 className="text-black font-semibold tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
               >
-                PRODUCTS
+                Products
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
               </Link>
-            )}
+            )} */}
 
-            {/* ✅ FIX: Replaced About with Members */}
             <Link
               to="/members"
               className="text-black font-semibold tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
             >
-              MEMBERS
+              Members
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
             </Link>
 
-            {/* ✅ FIX: Replaced Contact with Upcoming Events */}
             <Link
               to="/about-us"
               className="text-black  font-semibold tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
             >
-              ABOUT US
+              About Us
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
+            </Link>
+
+            <Link
+              to="/upcoming-events"
+              className="text-black  font-semibold tracking-wide transition-colors duration-300 hover:text-[#B24592] relative group"
+            >
+              Upcoming Events
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#B24592] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></span>
             </Link>
           </div>
@@ -208,7 +214,7 @@ const Navbar = () => {
                   onMouseLeave={() => setIsDropdownOpen(false)}
                 >
                   <Link to="/login">
-                    <button className="text-white px-4 py-2 rounded-lg transition-all duration-300 font-semibold bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg">
+                    <button className="text-black px-4 py-2 transition-all duration-300 font-semibold border border-white bg-transparent hover:bg-gradient-to-r hover:from-[#B24592] hover:to-[#F15F79] hover:text-white hover:shadow-lg">
                       <div className="flex items-center space-x-2">
                         <FaUser className="text-xl" />
                         <span>Login</span>

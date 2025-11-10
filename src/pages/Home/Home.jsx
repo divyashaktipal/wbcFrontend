@@ -1,183 +1,243 @@
 import { Link } from "react-router-dom";
 import ProductList from "../../components/ProductList";
-import { Users, Briefcase, BarChart } from "lucide-react"; 
-// import Navbar from "../../components/Navbar";
+import { Heart, Users, Briefcase, BarChart, Sparkles } from "lucide-react";
+import { useState } from "react";
+import MembersSection from "../../components/MembersSection";
+
 const Home = () => {
   return (
-    <div >
-      {/* Hero Section */}
-      
- {/*  */}
-      <section className="relative min-h-[90vh] flex flex-col md:flex-row items-center bg-gray-50">
+    <div>
+      {/* 🌸 HERO SECTION */}
+      <section className="relative min-h-[90vh] flex flex-col md:flex-row items-center bg-gradient-to-br from-[#6A0DAD] via-[#9B59B6] to-[#F15F79]">
+        {/* Background Image */}
         <div className="w-full h-full md:absolute left-0 top-0">
           <img
-            src="/Womens.jpg" // Assuming this is in your /public folder
+            src="/Womens.jpg"
             alt="Women Business Circle Members"
             className="w-full h-[50vh] md:h-[90vh] object-cover"
           />
-           
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
         </div>
 
-        {/* Content Card */}
-        <div className="relative w-[90%] md:w-[40%] lg:w-[35%] bg-white/10 backdrop-blur-xs border border-white/10 text-white p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mx-4 md:mr-8 lg:mr-12 md:ml-auto -mt-8 md:mt-0">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">
-            Women Business
-            <br />
-            Circle
+        {/* Glassy Content Card */}
+        <div className="relative w-[90%] sm:w-[80%] md:w-[45%] lg:w-[38%] bg-white/20 backdrop-blur-md border border-white/20 text-white p-6 sm:p-8 lg:p-12 rounded shadow-xl mx-4 md:mr-10 md:ml-auto -mt-8 md:mt-0 transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-lg hover:border-white/30">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight text-white/90">
+            Women Business Circle
           </h1>
-          <p className="text-gray-200 mb-6 md:mb-8 text-base">
-            The Women Business Circle (WBC) provides mentorship, networking,
-            business resources, and a collaborative ecosystem to help women
-            scale their ventures and achieve financial independence.
+          <p className="text-white/80 mb-6 text-base">
+            A community of women entrepreneurs offering{" "}
+            <strong>wellness services</strong> and
+            <strong> handmade products</strong> that celebrate creativity,
+            connection, and care.
           </p>
           <div className="flex flex-col sm:flex-row sm:space-x-4">
+            <Link to="/products">
+              <button className="w-full sm:w-auto mt-3 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white px-8 py-3 rounded font-semibold hover:from-[#B24592] hover:to-[#F15F79] transition-all duration-300 shadow-lg hover:shadow-xl">
+                Shop Products
+              </button>
+            </Link>
             <Link to="/become-seller">
-              <button className="w-full h-15 sm:w-auto mt-3 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#B24592] hover:to-[#F15F79] transition-all duration-300 shadow-lg hover:shadow-xl">
-                Become a Member
-              </button>
-            </Link>
-            <Link to="/upcoming-events">
-              <button className="w-full h-15 sm:w-auto mt-3 bg-white/30 backdrop-blur-sm text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/50 transition-colors duration-300">
-                Upcoming Events
+              <button className="w-full sm:w-auto mt-3 bg-white/30 backdrop-blur-sm text-white px-8 py-3 rounded font-semibold hover:bg-white/50 transition-colors duration-300">
+                Join as a Member
               </button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ✅ NEW: Why Join Us Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#6A0DAD] mb-4">
-              Why Join the Circle?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We provide the tools, community, and support you need to thrive.
-            </p>
-          </div>
+      {/* 💫 WHY JOIN US */}
+      <section className="py-16 md:py-24 bg-[#F8F0FF]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#6A0DAD] mb-4">
+            Why Join the Circle?
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
+            We empower women to become financially independent through
+            collaboration and creativity.
+          </p>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="text-center p-8 bg-gradient-to-br from-[#F8F0FF] to-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Users className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                Empowering Community
-              </h3>
-              <p className="text-gray-600">
-                Connect with a network of inspiring, like-minded women
-                entrepreneurs. Share, learn, and grow together.
-              </p>
-            </div>
-            {/* Feature 2 */}
-            <div className="text-center p-8 bg-gradient-to-br from-[#F8F0FF] to-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Briefcase className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                Business Resources
-              </h3>
-              <p className="text-gray-600">
-                Gain access to exclusive workshops, mentorship programs, and
-                tools designed to scale your venture.
-              </p>
-            </div>
-            {/* Feature 3 */}
-            <div className="text-center p-8 bg-gradient-to-br from-[#F8F0FF] to-white rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <BarChart className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                Grow Your Sales
-              </h3>
-              <p className="text-gray-600">
-                Showcase your products on our marketplace, reaching a dedicated
-                audience that wants to support women-led businesses.
-              </p>
-            </div>
+            <Feature
+              icon={<Users />}
+              title="Empowering Community"
+              text="Be part of a supportive sisterhood that uplifts and celebrates women entrepreneurs."
+            />
+            <Feature
+              icon={<Briefcase />}
+              title="Business Resources"
+              text="Access mentorship, workshops, and digital tools to grow your business."
+            />
+            <Feature
+              icon={<BarChart />}
+              title="Growth Opportunities"
+              text="Showcase your products and services to reach customers who believe in your story."
+            />
           </div>
         </div>
       </section>
 
-      {/* Our Products Section */}
-      <section className="py-16 md:py-24 bg-amber-50">
+      {/* Our Members */}
+      <MembersSection />
+
+      {/* 🌷 OUR PRODUCTS */}
+      {/* <section className="py-16 md:py-24 bg-amber-50">
         <div className="text-center mb-12 md:mb-16">
           <div className="flex items-center justify-center mb-4">
-            {/* ✅ UI THEME: Updated colors */}
             <div className="flex-grow border-t border-purple-300"></div>
             <h2 className="px-4 text-3xl md:text-4xl font-serif font-bold text-[#6A0DAD] whitespace-nowrap">
-              Our Products
+              Shop from Our Women Entrepreneurs
             </h2>
             <div className="flex-grow border-t border-purple-300"></div>
           </div>
         </div>
         <ProductList />
-      </section>
+      </section> */}
 
-      {/* Trusted Companies Section */}
-      <section className="py-12 bg-white mt-0">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-center text-xl md:text-2xl text-[#6A0DAD] mb-8 md:mb-12">
-            TRUSTED BY OVER 100+ SELLERS
-          </h2>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16 opacity-70">
-            {/* ... (logos) ... */}
+      {/* 🪶 GATEWAY TO HERITAGE */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-12">
+          <div className="w-full md:w-1/2 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#6A0DAD] mb-6">
+              Empowering India’s Women, One Product at a Time
+            </h2>
+            <p className="text-lg text-gray-700 mb-4">
+              Every jar of pickle, every handmade toy, every crafted bag carries
+              the heart of a woman entrepreneur.
+            </p>
+            <p className="text-lg text-gray-700 mb-4 font-semibold">
+              When you shop here, you support dreams — not corporations.
+            </p>
+            <Link to="/about-us">
+              <button className="mt-6 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white px-8 py-3 rounded font-semibold hover:from-[#B24592] hover:to-[#F15F79] transition-all duration-300 shadow-lg hover:shadow-xl">
+                Know More
+              </button>
+            </Link>
+          </div>
+          <div className="w-full md:w-1/2">
+            <div className="relative">
+              <img
+                src="/WBC.jpg"
+                alt="WBC Group Photo"
+                className="w-full h-90 rounded-lg shadow-xl"
+              />
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-pink-100 rounded-full opacity-50 -z-10"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-purple-100 rounded-full opacity-50 -z-10"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Gateway to Heritage Section */}
-      <section className="py-16 md:py-24 bg-[#F8F0FF]">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-            {/* Text Content */}
-            <div className="w-full md:w-1/2 text-center md:text-left">
-              {/* ✅ UI THEME: Updated colors */}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#6A0DAD] mb-6">
-                Empowering India's Women, One Product at a Time
-              </h2>
-              <div className="space-y-4 text-gray-700">
-                <p className="text-base md:text-lg">
-                  We're building a digital marketplace where Indian household
-                  women transform tradition into livelihood—selling homemade
-                  pickles, textiles, jewelry, snacks, and more.
+      {/* 🌺 FOUNDER’S NOTE */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-[#F8F0FF] via-white to-[#F8F0FF] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-[#B24592]/10 rounded-full blur-3xl -z-10"></div>
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#6A0DAD]/10 rounded-full blur-3xl -z-10"></div>
+
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-20">
+          {/* Founder Image */}
+          <div className="group relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white/70 backdrop-blur-sm transition-all duration-700 ease-out hover:-translate-y-1 hover:scale-105">
+            <img
+              src="./Aacharya-anima.jpeg"
+              alt="Founder of Women Business Circle"
+              className="w-full h-full object-cover rounded-full transform transition-transform duration-700 ease-out group-hover:scale-105 group-hover:rotate-1"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#B24592]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+            <div className="absolute inset-0 w-72 h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-tr from-[#B24592] to-[#F15F79] opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-500 -z-10"></div>
+          </div>
+
+          {/* Text */}
+          <div className="w-full md:w-2/3 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#6A0DAD] mb-6">
+              Founder’s Note
+            </h2>
+            <p className="text-lg text-gray-700 mb-4">
+              “When I founded the{" "}
+              <span className="font-semibold text-[#6A0DAD]">
+                Women Business Circle
+              </span>
+              , I envisioned a space where women could transform creativity into
+              purpose and purpose into prosperity.”
+            </p>
+            <p className="text-lg text-gray-700 italic mb-6">
+              “Empowered women empower communities — and that’s our everyday
+              mission.”
+            </p>
+            <h3 className="text-xl font-semibold text-[#6A0DAD]">
+              — Acharya Anima Goswami
+            </h3>
+            <p className="text-gray-600 text-base">
+              Founder, Women Business Circle
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 🗞 NEWS & EVENTS */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <div className="flex-grow border-t border-purple-300"></div>
+            <h2 className="px-4 text-3xl md:text-4xl font-serif font-bold text-[#6A0DAD] whitespace-nowrap">
+              News & Events
+            </h2>
+            <div className="flex-grow border-t border-purple-300"></div>
+          </div>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
+            Stay updated with our community happenings and upcoming programs.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {["event1.jpg", "event2.jpg", "event3.jpg"].map((img, i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-br from-[#F8F0FF] to-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300"
+              >
+                <img
+                  src={`/${img}`}
+                  alt="WBC Event"
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <h3 className="text-2xl font-semibold text-[#6A0DAD] mb-2">
+                  {
+                    [
+                      "Networking Brunch",
+                      "Leadership Workshop",
+                      "Mentorship Program",
+                    ][i]
+                  }
+                </h3>
+                <p className="text-gray-600 mb-3">
+                  {
+                    [
+                      "Connect with inspiring women and build lasting collaborations.",
+                      "Grow your leadership skills with expert mentors.",
+                      "One-on-one mentoring from experienced entrepreneurs.",
+                    ][i]
+                  }
                 </p>
-                <p className="text-base md:text-lg font-bold text-gray-800">
-                  No middlemen. No barriers. Just pure talent.
-                </p>
-                <p className="text-base md:text-lg ">
-                  Every product tells a story of resilience, creativity, and
-                  care. When you shop here, you support real women, real homes,
-                  and real dreams.
-                </p>
-                <Link to="/members">
-                  <button className="mt-6 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#B24592] hover:to-[#F15F79] transition-all duration-300 shadow-lg hover:shadow-xl">
-                    Meet Our Members
-                  </button>
+                <Link
+                  to="/upcoming-events"
+                  className="text-[#B24592] font-medium hover:underline"
+                >
+                  Learn More →
                 </Link>
               </div>
-            </div>
-
-            {/* Image */}
-            <div className="w-full md:w-1/2">
-              <div className="relative">
-                <img
-                  src="/Bbc.jpg"
-                  alt="Indian Artisan at Work"
-                  className="w-90 h-90 rounded-lg shadow-xl "
-                />
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-pink-100 rounded-full opacity-50 -z-10"></div>
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-purple-100 rounded-full opacity-50 -z-10"></div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+// Reusable Feature component
+const Feature = ({ icon, title, text }) => (
+  <div className="text-center p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="w-16 h-16 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+      {icon}
+    </div>
+    <h3 className="text-2xl font-semibold text-gray-900 mb-2">{title}</h3>
+    <p className="text-gray-600">{text}</p>
+  </div>
+);
 
 export default Home;
