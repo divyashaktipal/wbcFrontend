@@ -1,16 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
-import shally from "../../src/assets/shally-srivastava.jpg";
+import { Briefcase } from "lucide-react";
+
 const MembersSection = () => {
   const navigate = useNavigate();
   const [members, setMembers] = useState([
     {
       name: "",
-      age: 50,
       businessName: "",
     },
   ]);
+  // Manual age mapping
+  const manualAges = {
+    "Shally Srivastava": 28,
+    "Rukhsana Sabunwala": 35,
+    "Acharya Dhankunwer Nagar": 42,
+    "Pratima S. Ratnani": 49,
+    // add more manually
+  };
 
   // api call
   useEffect(() => {
@@ -28,7 +36,7 @@ const MembersSection = () => {
     fetchMembers();
   }, []); // Add empty dependency array
 
-  // add mouse hover effect
+  // mouse hover effect
   const [hoveredCardIndex, setHoveredCardIndex] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -70,7 +78,7 @@ const MembersSection = () => {
               <div
                 className="pointer-events-none absolute inset-0 z-0"
                 style={{
-                  background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(178, 69, 146, 0.3), transparent 60%)`,
+                  background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(188, 116, 236, 0.3), transparent 60%)`,
                 }}
               />
             )}
@@ -82,10 +90,26 @@ const MembersSection = () => {
                 className="w-16 h-16 rounded-full mb-4 object-cover"
               />
             </div>
-            <h3 className="text-lg font-semibold text-center">{member.name}</h3>
+            <p className="text-sm text-gray-500">
+              Age: {manualAges[member.name] || "N/A"}
+            </p>
+            <h3 className="text-lg font-semibold text-center">
+              {member.name && member.name.length > 15
+                ? member.name.slice(0, 18) + "..."
+                : member.name}
+            </h3>
+            <div className="flex items-center gap-2 mt-2 text-gray-600">
+              <Briefcase size={14} className="flex-shrink-0" />
+              <span className="text-sm font-semibold truncate">
+                {member.businessName && member.businessName.length > 15
+                  ? member.businessName.slice(0, 18) + "..."
+                  : member.businessName}
+              </span>
+            </div>
+
             <div className="mt-4">
               <Link to={`/members/${member._id}`}>
-                <button className="text-white sm:px-4 px-6 py-2 rounded-lg font-medium bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg transition-all duration-300">
+                <button className="text-white sm:px-4 px-6 py-2 rounded font-medium bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg transition-all duration-300">
                   View Profile
                 </button>
               </Link>
