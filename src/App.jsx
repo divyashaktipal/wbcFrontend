@@ -8,14 +8,13 @@ import Footer from "./components/Footer";
 import ProductList from "./components/ProductList";
 import MemberDetails from "./components/MemberDetails";
 import MembersSection from "./components/MembersSection";
-// import ScrollToTop from "./components/ScrollToTop";
 
 // src/pages
 import Home from "./pages/Home/Home";
 import ProductDetails from "./pages/ProductInfo/ProductDetails";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import ContactUs from "./pages/ContactUs/ContactUs";
-import Founderpage from "./pages/aboutus/founder";
+import Founderpage from "./pages/AboutUs/FounderPage";
 
 import Login from "./pages/Buyer/Login";
 import Signup from "./pages/Buyer/Signup";
