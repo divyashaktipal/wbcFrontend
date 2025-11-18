@@ -1,11 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Billing = () => {
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
   const sellerPhone = searchParams.get("sellerPhone");
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   // Product state
   const [product, setProduct] = useState({
@@ -15,19 +18,43 @@ const Billing = () => {
     image: "",
   });
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   // Fetch Product
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const res = await axiosInstance.get(`/products/${productId}`);
         setProduct(res.data.product);
       } catch (err) {
         console.error("Error fetching product", err);
+        setError("Failed to load product details");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProduct();
+    if (productId) {
+      fetchProduct();
+    }
   }, [productId]);
+
+
+  // console.log("Authenticated:", isAuthenticated);
+
+  // Pre-fill form with user data if available
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+      }));
+    }
+  }, [user]);
 
   // Billing form state
   const [formData, setFormData] = useState({
@@ -38,7 +65,6 @@ const Billing = () => {
     city: "",
     state: "",
     pincode: "",
-    paymentMethod: "upi",
   });
 
   // Handle input change
@@ -54,9 +80,9 @@ const Billing = () => {
     const priceNum = Number(product?.price) || 0;
     const tax = (priceNum * taxRate) / 100;
     return {
-      price: priceNum,
-      taxAmount: Math.round(tax),
-      totalAmount: Math.round(priceNum + tax),
+      price: priceNum.toLocaleString("en-IN"),
+      taxAmount: Math.round(tax).toLocaleString("en-IN"),
+      totalAmount: Math.round(priceNum + tax).toLocaleString("en-IN"),
     };
   }, [product]);
 
@@ -64,32 +90,88 @@ const Billing = () => {
   const handleWhatsAppRedirect = (e) => {
     e.preventDefault();
 
+    // Additional validation
+    if (!sellerPhone) {
+      alert("Seller contact information not available");
+      return;
+    }
+
     const { fullName, email, phone, address, city, state, pincode } = formData;
 
     const message = `
-Hello, I want to buy this product:
+🛍️ *NEW ORDER REQUEST*
 
-Product: ${product.name}
-Price: ₹${price}
-Tax (${taxRate}%): ₹${taxAmount}
-Total: ₹${totalAmount}
+*Product Details:*
+• Product: ${product.name}
+• Price: ₹${product.price}
+• Tax (${taxRate}%): ₹${taxAmount}
+• *Total Amount: ₹${totalAmount}*
 
-Shipping Details:
-${fullName}
-${email}
-${phone}
-${address}
-${city}, ${state} - ${pincode}
+*Customer Details:*
+• Name: ${fullName}
+• Email: ${email}
+• Phone: ${phone}
+• Address: ${address}, ${city}, ${state} - ${pincode}
 
-Please confirm the order.
-    `;
+Please confirm the order availability and provide payment details.
+Thank you! 👍
+    `.trim();
 
-    const encoded = encodeURIComponent(message.trim());
-    window.open(`https://wa.me/${sellerPhone}?text=${encoded}`, "_blank");
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/91${sellerPhone}?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
+
+    // Optional: Show confirmation message
+    alert("You're being redirected to WhatsApp to complete your order!");
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <div className="animate-pulse">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 bg-gray-200 h-96 rounded-lg"></div>
+            <div className="bg-gray-200 h-64 rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <h2 className="text-xl font-bold text-red-800 mb-2">Error</h2>
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+ 
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+      {/* Breadcrumb */}
+      <nav className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-purple-600 hover:text-purple-800 font-medium"
+        >
+          ← Back to Product
+        </button>
+      </nav>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Billing Form */}
         <div className="lg:col-span-2">
@@ -126,7 +208,8 @@ Please confirm the order.
                         required
                         value={formData[field.id]}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B0000]"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                        placeholder={`Enter your ${field.label.toLowerCase()}`}
                       />
                     </div>
                   ))}
@@ -139,33 +222,41 @@ Please confirm the order.
                   Shipping Address
                 </h3>
 
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Street Address *
-                </label>
-                <textarea
-                  id="address"
-                  name="address"
-                  rows="3"
-                  required
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B0000]"
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Street Address *
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    rows="3"
+                    required
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    placeholder="Enter your complete address"
+                  />
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {["city", "state", "pincode"].map((field) => (
-                    <div key={field}>
+                  {[
+                    { id: "city", label: "City" },
+                    { id: "state", label: "State" },
+                    { id: "pincode", label: "Pincode", type: "text" },
+                  ].map((field) => (
+                    <div key={field.id}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {field.charAt(0).toUpperCase() + field.slice(1)} *
+                        {field.label} *
                       </label>
                       <input
-                        type="text"
-                        id={field}
-                        name={field}
+                        type={field.type || "text"}
+                        id={field.id}
+                        name={field.id}
                         required
-                        value={formData[field]}
+                        value={formData[field.id]}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#8B0000]"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                        placeholder={`Enter ${field.label.toLowerCase()}`}
                       />
                     </div>
                   ))}
@@ -176,13 +267,30 @@ Please confirm the order.
         </div>
 
         {/* Right: Order Summary */}
-        <div>
-          <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="space-y-6">
+          <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Order Summary
             </h2>
 
-            <div className="space-y-4 text-gray-600">
+            {/* Product Info */}
+            {product.image && (
+              <div className="flex items-center gap-4 mb-4 p-3 bg-gray-50 rounded-lg">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-16 h-16 object-cover rounded-md"
+                />
+                <div>
+                  <h3 className="font-medium text-gray-900 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">Qty: 1</p>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3 text-gray-600 border-t pt-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span>₹{price}</span>
@@ -198,8 +306,8 @@ Please confirm the order.
                 <span>₹{taxAmount}</span>
               </div>
 
-              <div className="border-t pt-4 flex justify-between text-lg font-semibold">
-                <span>Total</span>
+              <div className="border-t pt-3 flex justify-between text-lg font-semibold text-gray-900">
+                <span>Total Amount</span>
                 <span>₹{totalAmount}</span>
               </div>
             </div>
@@ -207,10 +315,14 @@ Please confirm the order.
             <button
               type="submit"
               form="billing-form"
-              className="w-full mt-6 bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] rounded text-white py-3 px-4 rounded-md hover:bg-[#660000] transition"
+              className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3 px-4 rounded-lg hover:from-purple-700 hover:to-pink-600 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
             >
-              Make Payment through WhatsApp
+              Continue to WhatsApp
             </button>
+
+            <p className="text-xs text-gray-500 text-center mt-3">
+              You'll be redirected to WhatsApp to confirm your order
+            </p>
           </div>
         </div>
       </div>

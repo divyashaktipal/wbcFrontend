@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../contexts/AuthContext";
 import Billing from "../pages/UserProfile/Billing";
 import { Link } from "react-router-dom";
 import {
@@ -20,6 +21,7 @@ const MemberDetails = () => {
   const [showFullAbout, setShowFullAbout] = useState(false);
   const [memberDetails, setMemberDetails] = useState(null);
   const [randomRating, setRandomRating] = useState(null);
+  const { isAuthenticated } = useAuth();
   //   const [cart, setCart] = useState([]);
 
   // fetch member products
@@ -227,13 +229,21 @@ const MemberDetails = () => {
                         </p>
 
                         {/* ✨ Buy Now Button */}
-                        <Link
-                          to={`/billing/${prod._id}?sellerPhone=${memberDetails.seller.phone}`}
-                        >
-                          <button className="mt-3 text-white px-4 py-2 rounded-lg font-medium bg-gradient-to-r from-[#6A0DAD] to-[#9B59B6] hover:from-[#B24592] hover:to-[#F15F79] hover:shadow-lg transition-all duration-300">
+                        {isAuthenticated() ? (
+                          <Link
+                            to={`/billing/${prod._id}/?sellerPhone=${memberDetails.seller.phone}`}
+                            className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-lg shadow-md hover:from-purple-700 hover:to-pink-600 transition-all duration-300 inline-block mt-3"
+                          >
                             Buy Now
-                          </button>
-                        </Link>
+                          </Link>
+                        ) : (
+                          <Link
+                            to="/login"
+                            className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-lg shadow-md hover:from-purple-700 hover:to-pink-600 transition-all duration-300 inline-block mt-3"
+                          >
+                            Login to Buy
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
