@@ -11,6 +11,7 @@ import {
   Shield,
 } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
+
 export default function MyProfilePage() {
   const [user, setUser] = useState({});
 
@@ -22,7 +23,7 @@ export default function MyProfilePage() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response.data.buyerData.email);
+        // console.log(response.data.buyerData.email);
 
         setUser(response.data.buyerData);
       } catch {

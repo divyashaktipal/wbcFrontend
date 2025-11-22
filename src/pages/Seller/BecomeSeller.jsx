@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
-// ... (Modal component is unchanged) ...
+// Modal component (unchanged)
 const Modal = ({ title, message, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white rounded-lg p-8 max-w-md w-full text-center">
@@ -20,43 +20,7 @@ const Modal = ({ title, message, onClose }) => (
   </div>
 );
 
-// --- THIS COMPONENT IS NO LONGER USED, BUT WE CAN LEAVE IT ---
-const FileUploadUI = ({ qr }) => (
-  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-    <svg
-      className="w-8 h-8 mb-4 text-gray-500"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 20 16"
-    >
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-      />
-    </svg>
-    {qr ? (
-      <>
-        <p className="mb-2 text-sm font-semibold text-green-600">
-          File Selected:
-        </p>
-        <p className="text-xs text-gray-700">{qr.name}</p>
-      </>
-    ) : (
-      <>
-        <p className="mb-2 text-sm text-gray-500">
-          <span className="font-semibold">Upload Your QR-Code</span>
-        </p>
-        <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF</p>
-      </>
-    )}
-  </div>
-);
-
-// ... (ProfilePhotoUploadUI component is unchanged) ...
+// Profile photo upload component (unchanged)
 const ProfilePhotoUploadUI = ({ file }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -67,6 +31,7 @@ const ProfilePhotoUploadUI = ({ file }) => {
     }
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
+
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
@@ -115,8 +80,6 @@ const BecomeSeller = () => {
     pinCode: "",
     description: "",
     profilePhoto: null,
-    // --- QR REMOVED (1/5) ---
-    // qr: null,
     acceptTerms: false,
   });
 
@@ -145,8 +108,6 @@ const BecomeSeller = () => {
       pinCode,
       description,
       profileImage,
-      // --- QR REMOVED (2/5) ---
-      // qr,
       acceptTerms,
     } = formData;
 
@@ -161,6 +122,7 @@ const BecomeSeller = () => {
     else if (password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
 
+    // Profile photo validation
     if (!profileImage) newErrors.profileImage = "Profile photo is required";
 
     // Business Info
@@ -178,9 +140,6 @@ const BecomeSeller = () => {
     else if (description.trim().length < 50)
       newErrors.description = "Description must be at least 50 characters";
 
-    // --- QR REMOVED (2/5) ---
-    // if (!qr) newErrors.qr = "QR Code file is required";
-
     // Terms
     if (!acceptTerms)
       newErrors.acceptTerms = "You must accept the terms and conditions";
@@ -197,20 +156,6 @@ const BecomeSeller = () => {
     }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-
-  // --- QR REMOVED (3/5) ---
-  /*
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prev) => ({
-      ...prev,
-      qr: file || null,
-    }));
-    if (file) {
-      setErrors((prev) => ({ ...prev, qr: "" }));
-    }
-  };
-  */
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -238,9 +183,6 @@ const BecomeSeller = () => {
       AllFormData.append("pincode", formData.pinCode);
       AllFormData.append("businessDescription", formData.description);
       AllFormData.append("profileImage", formData.profileImage);
-
-      // --- QR REMOVED (4/5) ---
-      // AllFormData.append("qr", formData.qr); // The QR file
 
       try {
         const response = await axiosInstance.post(
@@ -368,6 +310,7 @@ const BecomeSeller = () => {
                       accept="image/png, image/jpeg"
                     />
                   </label>
+
                   <label
                     htmlFor="profile-photo-file"
                     className="cursor-pointer bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
@@ -393,7 +336,7 @@ const BecomeSeller = () => {
               </p>
             </div>
 
-            {/* Section 2: Business Info */}
+            {/* Business Information Section */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold text-gray-800 border-b pb-3">
                 Business Information
@@ -412,7 +355,7 @@ const BecomeSeller = () => {
                           : "PIN Code *"}
                       </label>
                       {field === "businessType" ? (
-                        <select
+                        <input
                           name="businessType"
                           value={formData.businessType}
                           onChange={handleInputChange}
@@ -421,15 +364,7 @@ const BecomeSeller = () => {
                               ? "border-red-500"
                               : "border-gray-300"
                           }`}
-                        >
-                          <option value="">Select Type</option>
-                          <option value="food">Food & Beverages</option>
-                          <option value="fashion">Fashion & Apparel</option>
-                          <option value="handicrafts">Handicrafts</option>
-                          <option value="beauty">Beauty & Wellness</option>
-                          <option value="home">Home & Living</option>
-                          <option value="other">Other</option>
-                        </select>
+                        ></input>
                       ) : (
                         <input
                           type="text"
@@ -452,16 +387,12 @@ const BecomeSeller = () => {
               </div>
             </div>
 
-            {/* Section 3: Product & Payment Information */}
+            {/* Business Description Section */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold text-gray-800 border-b pb-3">
-                Product & Payment Information
+                Business Description
               </h2>
-              {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Business Description *
-                </label>
                 <textarea
                   name="description"
                   value={formData.description}
@@ -481,38 +412,9 @@ const BecomeSeller = () => {
                   </p>
                 </div>
               </div>
-
-              {/* --- QR REMOVED (5/5) --- */}
-              {/*
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Your Payment QR-Code *
-                </label>
-                <div className="flex items-center justify-center w-full">
-                  <label
-                    htmlFor="dropzone-file"
-                    className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 ${
-                      errors.qr ? "border-red-500" : "border-gray-300"
-                    }`}
-                  >
-                    <FileUploadUI qr={formData.qr} />
-                    <input
-                      id="dropzone-file"
-                      type="file"
-                      className="hidden"
-                      onChange={handleFileChange}
-                      accept="image/png, image/jpeg, image/gif, image/svg+xml"
-                    />
-                  </label>
-                </div>
-                {errors.qr && (
-                  <p className="text-red-500 text-sm mt-1">{errors.qr}</p>
-                )}
-              </div>
-              */}
             </div>
 
-            {/* Section 4: Terms & Conditions */}
+            {/* Terms & Conditions Section */}
             <div className="space-y-6">
               <h2 className="text-2xl font-semibold text-gray-800 border-b pb-3">
                 Terms & Conditions
@@ -552,7 +454,7 @@ const BecomeSeller = () => {
                   >
                     Terms & Conditions
                   </Link>{" "}
-                  and and Seller Agreement *
+                  and Seller Agreement *
                 </span>
               </label>
               {errors.acceptTerms && (
@@ -561,7 +463,7 @@ const BecomeSeller = () => {
                 </p>
               )}
 
-              {/* Final Submit Button */}
+              {/* Submit Button */}
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"

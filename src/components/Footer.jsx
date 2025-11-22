@@ -9,13 +9,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1">
-            <div className="flex items-center mb-4">
-              <img
-                src={logo}
-                alt="Women Business Circle"
-                className="h-12 w-auto brightness-0 invert"
-              />
-            </div>
+            <Link to="/">
+              <div className="flex items-center mb-4">
+                <img
+                  src={logo}
+                  alt="Women Business Circle"
+                  className="h-12 w-auto brightness-0 invert"
+                />
+              </div>
+            </Link>
             <p className="text-sm text-gray-400 mb-4">
               Transforming lives through women's entrepreneurship and business
               networking opportunities.

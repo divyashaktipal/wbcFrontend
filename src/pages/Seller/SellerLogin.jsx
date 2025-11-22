@@ -1,13 +1,11 @@
-// Import necessary modules and hooks
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-// We use the shared axiosInstance, assuming it's correctly configured
+import logo from "../../assets/logo.png";
 import axiosInstance from "../../api/axiosInstance";
 
-// SellerLogin component (with Buyer UI)
 const SellerLogin = () => {
-  const navigate = useNavigate(); // Hook to programmatically navigate
+  const navigate = useNavigate();
   const { login } = useAuth(); // Custom context hook to handle login logic
 
   // State for form data, error messages, and loading status
@@ -67,7 +65,7 @@ const SellerLogin = () => {
         <div className="p-8">
           {/* Logo Section */}
           <div className="flex justify-center mb-4 mt-2">
-            <img src="/wbc-logo.png" alt="WBC Logo" className="h-14 w-auto" />
+            <img src={logo} alt="WBC Logo" className="h-14 w-auto" />
           </div>
 
           {/* Welcome Text */}

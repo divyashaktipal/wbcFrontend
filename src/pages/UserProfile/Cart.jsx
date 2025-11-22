@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import axiosInstance from "../../api/axiosInstance";
 import CartItem from "./CartItem";
-import { cartAuth } from "../../contexts/CartContext";
+// import { cartAuth } from "../../contexts/CartContext";
 
 const Cart = () => {
   const { isAuthenticated } = useAuth();
@@ -11,7 +11,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [subtotal, setSubtotal] = useState(0); // 🎯 FIX: Destructure the getTotalCartAmount function from the context
 
-  const { addCart, removeFromCart, getTotalCartAmount } = cartAuth(); // FIX 2: Corrected the useEffect structure and logic
+  // const { addCart, removeFromCart, getTotalCartAmount } = cartAuth(); // FIX 2: Corrected the useEffect structure and logic
 
   useEffect(() => {
     const fetchCartItems = async () => {

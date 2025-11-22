@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = () => {
-    if(!token || !user) return false;
+    if (!token || !user) return false;
     return true;
   };
 

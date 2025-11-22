@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance"; // 🛑 IMPORT AXIOS INSTANCE
+import axiosInstance from "../../api/axiosInstance";
 
-/**
- * Simple Toast system (no external libs)
- * ... (Toast component remains the same) ...
- */
+// ---------------- Toast Component ----------------
 const Toast = ({ id, type, message, onClose }) => {
   return (
     <div
@@ -81,6 +78,7 @@ const Toast = ({ id, type, message, onClose }) => {
   );
 };
 
+// ---------------- AddProduct Component ----------------
 const AddProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -94,52 +92,49 @@ const AddProduct = () => {
     price: "",
     stock: "",
     category: "",
-    images: [], // File objects
+    images: [], // File objects or existing URLs
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toasts, setToasts] = useState([]);
 
-  // Initialize form with product data if in edit mode
+  // Initialize form in edit mode
   useEffect(() => {
     if (isEditMode && productToEdit) {
       setFormData({
         name: productToEdit.name || "",
         description: productToEdit.description || "",
-        // Ensure numbers are handled correctly (though inputs handle strings)
-        price: productToEdit.price || "", 
-        stock: productToEdit.stock || "", 
+        price: productToEdit.price || "",
+        stock: productToEdit.stock || "",
         category: productToEdit.category || "",
-        // Keep existing images (which should have a URL/path)
-        images: productToEdit.images || [], 
+        images: productToEdit.images || [],
       });
     }
   }, [isEditMode, productToEdit]);
 
-  // helper to add toast
+  // ---------------- Toast Helpers ----------------
   const addToast = (type, message, duration = 3500) => {
     const id = Date.now() + Math.random();
     setToasts((t) => [...t, { id, type, message }]);
-    setTimeout(() => {
-      setToasts((t) => t.filter((x) => x.id !== id));
-    }, duration);
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), duration);
   };
-
-  const removeToast = (id) => {
-    setToasts((t) => t.filter((x) => x.id !== id));
-  };
+  const removeToast = (id) => setToasts((t) => t.filter((x) => x.id !== id));
 
   // ---------------- Image Handlers ----------------
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    // Filter out existing images from the count when adding new ones
-    const existingImagesCount = formData.images.filter(img => !img instanceof File).length;
+    const existingImagesCount = formData.images.filter(
+      (img) => !(img instanceof File)
+    ).length;
 
-    if (files.length + formData.images.length > 3) {
-      addToast("error", `You can upload a maximum of 3 images total. You tried to upload ${files.length} more.`);
+    if (files.length + existingImagesCount > 3) {
+      addToast(
+        "error",
+        `You can upload a maximum of 3 images total. You tried to upload ${files.length} more.`
+      );
       return;
     }
 
@@ -149,11 +144,8 @@ const AddProduct = () => {
       return;
     }
 
-    const updated = [...formData.images, ...imageFiles];
-    setFormData((s) => ({ ...s, images: updated }));
-
-    // Reset the input field to allow selecting the same files again if needed
-    e.target.value = null; 
+    setFormData((s) => ({ ...s, images: [...s.images, ...imageFiles] }));
+    e.target.value = null;
   };
 
   const handleRemoveImage = (index) => {
@@ -168,41 +160,28 @@ const AddProduct = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((s) => ({ ...s, [name]: value }));
-    if (formErrors[name]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }));
-    }
+    if (formErrors[name]) setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   // ---------------- Validation ----------------
   const validateForm = () => {
     const errors = {};
-
-    if (!formData.name.trim()) {
-      errors.name = "Product name is required";
-    }
-    if (!formData.price) {
-      errors.price = "Price is required";
-    } else if (parseFloat(formData.price) <= 0) {
+    if (!formData.name.trim()) errors.name = "Product name is required";
+    if (!formData.price) errors.price = "Price is required";
+    else if (parseFloat(formData.price) <= 0)
       errors.price = "Price must be greater than 0";
-    }
-    if (!formData.stock) {
-      errors.stock = "Stock is required";
-    } else if (parseInt(formData.stock) < 0) {
+    if (!formData.stock) errors.stock = "Stock is required";
+    else if (parseInt(formData.stock) < 0)
       errors.stock = "Stock cannot be negative";
-    }
-    if (!formData.category) {
-      errors.category = "Category is required";
-    }
-    // Only require new image upload if not in edit mode, or if no images exist
-    if (!isEditMode && formData.images.length === 0) {
-        errors.images = "At least one image is required for a new product.";
-    }
+    if (!formData.category) errors.category = "Category is required";
+    if (!isEditMode && formData.images.length === 0)
+      errors.images = "At least one image is required";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // ---------------- Submit (Integrated with Axios) ----------------
+  // ---------------- Submit ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -213,95 +192,67 @@ const AddProduct = () => {
       return;
     }
 
-    // 🛑 STEP 1: Create FormData object for multipart/form-data
     const data = new FormData();
-    
-    // Append text fields
-    data.append('name', formData.name);
-    data.append('description', formData.description);
-    data.append('price', formData.price); // Multer handles string conversion
-    data.append('stock', formData.stock);
-    data.append('category', formData.category);
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("price", formData.price);
+    data.append("stock", formData.stock);
+    data.append("category", formData.category);
 
-    // Append image files
-    // Find all *new* File objects to upload (existing ones are handled separately or deleted)
-    const newImageFiles = formData.images.filter(img => img instanceof File);
-    
-    if (newImageFiles.length > 0) {
-        // Append new files using the Multer field name (e.g., 'productImage' or 'images')
-        // We will assume your backend handles multiple files if you use 'images[]'
-        // If your backend uses `upload.single('image')`, you must only send one file.
-        // Assuming your setup uses `upload.single('productImage')` from previous context:
-        data.append('productImage', newImageFiles[0]); // Send only the first file if using .single()
-        // If using array: for (const file of newImageFiles) { data.append('images', file); }
-    }
-
+    // Only append new files
+    const newImageFiles = formData.images.filter((img) => img instanceof File);
+    newImageFiles.forEach((file) => data.append("productImage", file));
 
     try {
-        let response;
-        const productId = productToEdit?.id; 
+      let response;
+      const productId = productToEdit?.id;
 
-        if (isEditMode && productId) {
-            // 🛑 UPDATE EXISTING PRODUCT (PUT/PATCH request)
-            // Note: Updating files often requires a separate process or endpoint
-            // We'll use PUT for full update, appending necessary IDs for backend route:
-            
-            // To update text fields only:
-            response = await axiosInstance.patch(`/seller/product/update/${productId}`, data); 
-            
-            addToast("success", "Product updated successfully!");
-        } else {
-            // 🛑 ADD NEW PRODUCT (POST request)
-            // The route should be exactly: /api/seller/product/add
-            response = await axiosInstance.post(`/seller/product/add`, data,
-                {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-              }
-            ); 
-            
-            addToast("success", response.data.message || "Product added successfully!");
-        }
+      if (isEditMode && productId) {
+        response = await axiosInstance.patch(
+          `/seller/product/update/${productId}`,
+          data
+        );
+        addToast("success", "Product updated successfully!");
+      } else {
+        response = await axiosInstance.post(`/seller/product/add`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        addToast(
+          "success",
+          response.data.message || "Product added successfully!"
+        );
+      }
 
-        // Navigate after success delay
-        setTimeout(() => navigate("/seller-account"), 1200);
-
+      setTimeout(() => navigate("/seller-account"), 1200);
     } catch (err) {
-        console.error("API Submission Error:", err.response || err);
-        const errorMessage = err.response?.data?.message || 'Failed to save product. Check server logs.';
-        addToast("error", errorMessage);
+      console.error("API Error:", err.response || err);
+      addToast(
+        "error",
+        err.response?.data?.message || "Failed to save product."
+      );
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
-  // cleanup created objectURLs
+  // ---------------- Cleanup object URLs ----------------
   useEffect(() => {
     return () => {
-      // Clean up object URLs to prevent memory leaks
       formData.images.forEach((file) => {
-        // Check if it's a File object that we created an ephemeral URL for
-        if (file instanceof File) {
-          URL.revokeObjectURL(file.url || URL.createObjectURL(file));
+        if (file instanceof File && file.previewUrl) {
+          URL.revokeObjectURL(file.previewUrl);
         }
       });
     };
-  }, [formData.images]); // Rerun cleanup when images change
+  }, [formData.images]);
 
-  // Helper function to safely get image source (File or existing URL)
-  const getImageSource = (file) => {
-    if (file instanceof File) {
-        return URL.createObjectURL(file);
-    }
-    // Assumes existing images have a 'url' property or are just a string path
-    return file.url || file;
-  }
+  const getImageSource = (file) =>
+    file instanceof File ? URL.createObjectURL(file) : file.url || file;
 
-
+  // ---------------- Render ----------------
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
-      {/* Toast container (top-right) */}
+      {/* Toasts */}
       <div className="fixed top-6 right-6 z-50 flex flex-col gap-3">
         {toasts.map((t) => (
           <Toast key={t.id} {...t} onClose={removeToast} />
@@ -467,11 +418,10 @@ const AddProduct = () => {
               />
             </div>
 
-            {/* Previews */}
             {formData.images.length > 0 && (
               <div className="mt-4 grid grid-cols-3 gap-3">
                 {formData.images.map((file, idx) => {
-                  const src = getImageSource(file); // 🛑 Use helper
+                  const src = getImageSource(file);
                   return (
                     <div
                       key={idx}

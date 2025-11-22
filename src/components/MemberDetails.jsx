@@ -1,4 +1,3 @@
-// src/components/MemberDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
@@ -12,6 +11,7 @@ import {
   Sparkles,
   ShoppingCart,
   Star,
+  Package,
 } from "lucide-react";
 
 const MemberDetails = () => {
@@ -20,7 +20,8 @@ const MemberDetails = () => {
   const [product, setProduct] = useState([]);
   const [showFullAbout, setShowFullAbout] = useState(false);
   const [memberDetails, setMemberDetails] = useState(null);
-  const [randomRating, setRandomRating] = useState(null);
+  const [rating, setRating] = useState(null); // for actual rating from backend
+  const [randomRating, setRandomRating] = useState(null); // for random rating
   const { isAuthenticated } = useAuth();
   //   const [cart, setCart] = useState([]);
 
@@ -58,6 +59,17 @@ const MemberDetails = () => {
     // Generate a random rating between 3.0 and 5.0
     const rating = (Math.random() * (5 - 3) + 3).toFixed(1);
     setRandomRating(rating);
+
+    // fetch actual rating from backend
+    // const fetchRating = async () => {
+    //   try {
+    //     const res = await axiosInstance.get(`/getSellerRating/${id}`);
+    //     setRating(res.data.rating);
+    //   } catch (error) {
+    //     console.error("Failed to fetch rating:", error);
+    //   }
+    // };
+    // fetchRating();
   }, []);
 
   // Load Shimmer UI (When data is still loading)
@@ -116,14 +128,14 @@ const MemberDetails = () => {
       <div className="min-h-screen bg-gradient-to-br from-[#F8F0FF] via-white to-[#F8F0FF] p-4 sm:p-6 md:p-8">
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}
-          <button
-            onClick={() => navigate(-1)}
-            className="mb-6 flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full shadow-md border border-gray-200 text-gray-700 hover:text-white hover:bg-gradient-to-r from-purple-600 to-pink-500 transition-all duration-300 font-medium"
-          >
-            <ArrowLeft size={18} />
-            <span>Back</span>
-          </button>
-
+          <nav className="mb-6">
+            <button
+              onClick={() => navigate(-1)}
+              className="text-purple-600 hover:text-purple-800 font-medium"
+            >
+              ← Back to Members
+            </button>
+          </nav>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Profile Section */}
             <div className="lg:col-span-1">
@@ -196,7 +208,7 @@ const MemberDetails = () => {
             </div>
 
             {/* Products Section */}
-            {Array.isArray(product) && product.length > 0 && (
+            {Array.isArray(product) && product.length > 0 ? (
               <div className="lg:col-span-2 space-y-6">
                 <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <ShoppingCart size={18} className="text-purple-600" />
@@ -248,6 +260,30 @@ const MemberDetails = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            ) : (
+              // No Products Card
+              <div className="lg:col-span-2">
+                <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/50 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-4">
+                    <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center">
+                      <Package size={40} className="text-purple-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800">
+                      No Products Available
+                    </h3>
+                    <p className="text-gray-600 max-w-md">
+                      {memberDetails.seller.name} hasn't added any products yet.
+                      Check back later to see their amazing offerings!
+                    </p>
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="mt-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white px-6 py-2 rounded-lg shadow-md hover:from-purple-700 hover:to-pink-600 transition-all duration-300 font-medium"
+                    >
+                      Browse Other Members
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

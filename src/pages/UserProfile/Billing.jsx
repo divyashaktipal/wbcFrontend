@@ -123,7 +123,7 @@ Thank you! 👍
     window.open(whatsappUrl, "_blank");
 
     // Optional: Show confirmation message
-    alert("You're being redirected to WhatsApp to complete your order!");
+    // alert("You're being redirected to WhatsApp to complete your order!");
   };
 
   // Loading state

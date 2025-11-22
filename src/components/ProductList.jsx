@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useAuth } from "../contexts/AuthContext";
 import { FiShoppingCart, FiInfo } from "react-icons/fi";
-import { cartAuth } from "../contexts/CartContext"; // Import cartAuth
+// import { cartAuth } from "../contexts/CartContext"; // Import cartAuth
 
 const ProductList = () => {
   const { isAuthenticated } = useAuth();
@@ -14,7 +14,7 @@ const ProductList = () => {
   const productsPerPage = 8;
 
   // 🎯 FIX: Changed 'addToCart' to 'addCart' to match your CartContext
-  const { addCart } = cartAuth();
+  // const { addCart } = cartAuth();
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -74,12 +74,12 @@ const ProductList = () => {
             />
             <div className="p-4">
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                 {product.name.length > 10
+                {product.name.length > 10
                   ? `${product.name.slice(0, 10)}...`
                   : product.name}
               </h3>
               <p className="text-gray-600 text-sm mb-2">
-               {product.description.length > 10
+                {product.description.length > 10
                   ? `${product.description.slice(0, 10)}...`
                   : product.description}
               </p>
